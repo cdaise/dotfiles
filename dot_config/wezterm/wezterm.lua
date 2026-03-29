@@ -1,0 +1,183 @@
+local wezterm = require("wezterm")
+local act = wezterm.action
+local config = wezterm.config_builder()
+
+config.front_end = "OpenGL"
+config.max_fps = 144
+config.default_cursor_style = "BlinkingBlock"
+config.animation_fps = 1
+config.cursor_blink_rate = 500
+config.term = "xterm-256color"
+config.font = wezterm.font("Hack Regular")
+config.cell_width = 0.9
+config.window_background_opacity = 1.0
+config.prefer_egl = true
+config.font_size = 14.0
+config.window_padding = {
+	left = 10,
+	right = 10,
+	top = 10,
+	bottom = 10,
+}
+config.window_background_opacity = 0.9
+config.text_background_opacity = 1.0
+
+config.window_frame = {
+	font = wezterm.font({ family = "Hack", weight = "Regular" }),
+}
+config.window_decorations = "NONE | RESIZE"
+config.default_prog = { "powershell.exe", "-NoLogo" }
+config.initial_cols = 81
+config.window_close_confirmation = "NeverPrompt"
+
+config.quick_select_patterns = {
+  -- support for C:\\ style paths
+  "[A-Za-z]:\\\\(?:[^\\\\/:*?\"<>|\\r\\n]+\\\\)*[^\\\\/:*?\"<>|\\r\\n]*(?::\\d+(?::\\d+)?)?",
+}
+
+
+-- Leonardo color scheme
+config.colors = {
+	background = "#17130e",
+	foreground = "#ddd5c4",
+	cursor_bg = "#f2e8d4",
+	cursor_fg = "#17130e",
+	cursor_border = "#f2e8d4",
+	selection_bg = "#4a4339",
+	selection_fg = "#ddd5c4",
+	split = "#4a4339",
+
+	ansi = {
+		"#0e0b07",
+		"#c25a4a",
+		"#8a9a6b",
+		"#d4a24e",
+		"#7b8fa3",
+		"#b07a95",
+		"#7a9e8e",
+		"#c8c0b2",
+	},
+
+	brights = {
+		"#4a4339",
+		"#e07a6a",
+		"#a8b88a",
+		"#e8be6e",
+		"#9bb0c4",
+		"#cc9ab4",
+		"#9abcab",
+		"#f2e8d4",
+	},
+
+	tab_bar = {
+		background = "#0e0b07",
+		active_tab = {
+			bg_color = "#17130e",
+			fg_color = "#ddd5c4",
+		},
+		inactive_tab = {
+			bg_color = "#0e0b07",
+			fg_color = "#4a4339",
+		},
+		inactive_tab_hover = {
+			bg_color = "#17130e",
+			fg_color = "#c8c0b2",
+		},
+		new_tab = {
+			bg_color = "#0e0b07",
+			fg_color = "#4a4339",
+		},
+		new_tab_hover = {
+			bg_color = "#17130e",
+			fg_color = "#d4a24e",
+		},
+	},
+}
+
+-- tabs
+config.use_fancy_tab_bar = false
+config.hide_tab_bar_if_only_one_tab = false
+config.tab_bar_at_bottom = true
+config.tab_max_width = 32
+
+-- leader key: Ctrl+a (like tmux)
+config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1500 }
+
+config.keys = {
+	-- tabs
+	{ key = "c", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") },
+	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
+	{ key = "b", mods = "LEADER", action = act.ActivateTabRelative(-1) },
+	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
+
+	-- pane splits
+	{ key = "|", mods = "LEADER|SHIFT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "-", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+
+	-- pane navigation (hjkl)
+	{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+	{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+	{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+
+	-- pane resize
+	{ key = "H", mods = "LEADER|SHIFT", action = act.AdjustPaneSize({ "Left", 5 }) },
+	{ key = "J", mods = "LEADER|SHIFT", action = act.AdjustPaneSize({ "Down", 5 }) },
+	{ key = "K", mods = "LEADER|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
+	{ key = "L", mods = "LEADER|SHIFT", action = act.AdjustPaneSize({ "Right", 5 }) },
+
+	-- zoom pane toggle
+	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
+
+	-- tab switching by number
+	{ key = "1", mods = "LEADER", action = act.ActivateTab(0) },
+	{ key = "2", mods = "LEADER", action = act.ActivateTab(1) },
+	{ key = "3", mods = "LEADER", action = act.ActivateTab(2) },
+	{ key = "4", mods = "LEADER", action = act.ActivateTab(3) },
+	{ key = "5", mods = "LEADER", action = act.ActivateTab(4) },
+	{ key = "6", mods = "LEADER", action = act.ActivateTab(5) },
+	{ key = "7", mods = "LEADER", action = act.ActivateTab(6) },
+	{ key = "8", mods = "LEADER", action = act.ActivateTab(7) },
+	{ key = "9", mods = "LEADER", action = act.ActivateTab(8) },
+
+	-- send Ctrl+a through when pressing it twice
+	{ key = "a", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
+}
+
+-- status bar: show leader active + workspace
+wezterm.on("update-right-status", function(window, pane)
+	local leader = window:leader_is_active() and " LEADER " or ""
+	local workspace = window:active_workspace()
+
+	window:set_left_status(wezterm.format({
+		{ Foreground = { Color = "#17130e" } },
+		{ Background = { Color = "#d4a24e" } },
+		{ Text = leader },
+	}))
+
+	window:set_right_status(wezterm.format({
+		{ Foreground = { Color = "#4a4339" } },
+		{ Background = { Color = "#0e0b07" } },
+		{ Text = " " .. workspace .. " " },
+	}))
+end)
+
+-- tab title formatting
+wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width)
+	local index = tab.tab_index + 1
+	local title = tab.active_pane.title
+	if #title > max_width - 6 then
+		title = title:sub(1, max_width - 9) .. "..."
+	end
+
+	local fg = tab.is_active and "#d4a24e" or "#4a4339"
+	local bg = tab.is_active and "#17130e" or "#0e0b07"
+
+	return {
+		{ Foreground = { Color = fg } },
+		{ Background = { Color = bg } },
+		{ Text = " " .. index .. ": " .. title .. " " },
+	}
+end)
+
+return config
