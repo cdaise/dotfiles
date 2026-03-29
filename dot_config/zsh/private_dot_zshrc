@@ -1,0 +1,90 @@
+# inspiration from
+# https://scriptingosx.com/2019/06/moving-to-zsh/
+# https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/zsh/.config/zsh
+
+# see https://stackoverflow.com/questions/15769615/remove-last-login-message-for-new-tabs-in-terminal
+printf '\33c\e[3J'
+
+# zsh configuration
+PS1='%F{blue}%B%~%b%f %F{white}❯%f '
+
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+bindkey -e
+
+setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_REDUCE_BLANKS
+
+setopt MENU_COMPLETE
+setopt NO_CASE_GLOB
+setopt AUTO_CD
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' menu select
+
+autoload -U compinit && compinit
+
+# env configuration
+
+prepend() {
+  [ -d "$1" ] && PATH="$1:$PATH"
+}
+
+prepend "$XDG_CONFIG_HOME/bin"
+
+unset prepend
+export PATH
+
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
+export LANGUAGE='en_US.UTF-8'
+
+if hash nvim 2>/dev/null; then
+  export EDITOR=nvim
+  export MANPAGER='nvim +Man!'
+elif hash vim 2>/dev/null; then
+  export EDITOR=vim
+else
+  export EDITOR=vi
+fi
+
+export HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=100000
+
+export CLICOLOR=1
+
+mkcd () {
+  \mkdir -p "$1"
+  cd "$1"
+}
+
+tempe () {
+  cd "$(mktemp -d)"
+  chmod -R 0700 .
+  if [[ $# -eq 1 ]]; then
+    \mkdir -p "$1"
+    cd "$1"
+    chmod -R 0700 .
+  fi
+}
+
+export GPG_TTY=$(tty)
+eval "$(zoxide init --cmd cd zsh)"
+
+. "$HOME/.cargo/env"
+. "$HOME/.local/bin/env"
+
+export NVM_DIR="$HOME/.nvm"
+nvm() {
+    unset -f nvm node npm npx
+    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    nvm "$@"
+}
+node() { nvm use default >/dev/null 2>&1; command node "$@"; }
+npm() { nvm use default >/dev/null 2>&1; command npm "$@"; }
+npx() { nvm use default >/dev/null 2>&1; command npx "$@"; }

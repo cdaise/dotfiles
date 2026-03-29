@@ -1,0 +1,82 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+*#
+.sublime-workspace
+
+# Logs/DBs
+*.log
+npm-debug.log
+
+# Packages/Binaries
+node_modules/
+venv/
+
+# Builds/Compiled
+*.pyc
+*.pyo
+__pycache__/
+*.class
+*.dll
+*.exe
+*.o
+*.so
+dist/
+build/
+
+# Temp
+*.bak
+*.tmp
+
+# Claude Code
+.claude/
+.claude-cache/
+claude-history/
+claude-debug.log
+CLAUDE.local.md
+/plans/
+
+# Gemini Code Assist / CLI
+.aiexclude
+.geminiignore
+.gemini/
+gemini-cache/
+gemini-debug.log
+
+# OpenAI Codex / o1
+.codex/
+.openai/
+openai-logs/
+openai-cache/
+codex-cache/
+codex-logs/
+
+# GitHub Copilot / Cursor / Generic
+.cursorignore
+.copilot/
+copilot-cache/
+
+# Grok / xAI / Others
+.grok/
+grok-cache/
+grok-cli-cache/
+
+# Generic agent cruft
+*.agent.*
+*.llm.*
+*.prompt.*
+*.chat.*
+*.transcript.*
+*.ai.md

@@ -1,0 +1,79 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+brew bundle --file=/dev/stdin <<EOF
+tap "nikitabobko/tap"
+tap "oven-sh/bun/bun"
+
+# Essential
+brew "btop"
+brew "cloc"
+brew "cmake"
+brew "coreutils"
+brew "fd"
+brew "ffmpeg"
+brew "fzf"
+brew "gdb"
+brew "graphviz"
+brew "imagemagick@7"
+brew "jq"
+brew "llvm"
+brew "mpv"
+brew "neovim"
+brew "pandoc"
+brew "pinentry"
+brew "ripgrep"
+brew "tmux"
+brew "zoxide"
+
+# Elective 
+
+brew "cheat"
+brew "chezmoi"
+brew "gh"
+brew "pandoc"
+brew "ssh-copy-id"
+brew "task@3"
+brew "tldr"
+brew "trash"
+brew "yt-dlp"
+
+# Development
+
+brew "bun"
+brew "clojure"
+brew "cloudflare-wrangler"
+brew "go"
+brew "jenv"
+brew "lua"
+brew "nvm"
+brew "pnpm"
+brew "uv"
+
+# Applications
+
+cask "aerospace"
+cask "affinity"
+cask "anki"
+cask "audacity"
+cask "balenaetcher"
+cask "beeper"
+cask "blender"
+cask "calibre"
+cask "capcut"
+cask "clop"
+cask "godot"
+cask "handy"
+cask "hiddenbar"
+cask "little-snitch@nightly"
+cask "mullvad-vpn"
+cask "pearcleaner"
+cask "raycast"
+cask "shottr"
+cask "sioyek"
+cask "tailscale-app"
+cask "utm"
+cask "wireshark"
+cask "zotero"
+EOF
+{{ end -}}
