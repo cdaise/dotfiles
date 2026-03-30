@@ -24,3 +24,5 @@
 *.dll    binary
 *.so     binary
 *.dylib  binary
+
+* text eol=lf

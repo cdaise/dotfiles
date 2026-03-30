@@ -1,13 +1,17 @@
 # credit http://archive.today/2026.03.26-230516/https://blog.gitbutler.com/how-git-core-devs-configure-git%23global-ignore-file
 [user]
-	name = {{ .name }}
-	email = {{ .email }}
-	username = {{ .username }}
- signingKey = 567CEB6B
+  name = {{ .name }}
+  email = {{ .email }}
+  username = {{ .username }}
+  signingKey = 94115B5D93BB46C9
+{{- if eq .chezmoi.os "windows" }}
+[gpg]
+  program = C:\\Program Files\\GnuPG\\bin\\gpg.exe
+{{- end }}
 [core]
-	editor = nvim
-	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	pager = bat -l man -p
+  editor = nvim
+	 whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	 pager = bat -l man -p
   autocrlf = false
 [commit]
   verbose = true
