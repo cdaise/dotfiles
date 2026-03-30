@@ -23,10 +23,12 @@ config.window_background_opacity = 0.9
 config.text_background_opacity = 1.0
 
 config.window_frame = {
-	font = wezterm.font({ family = "Hack", weight = "Regular" }),
+	font = wezterm.font_with_fallback({ family = "Hack", weight = "Regular" }),
 }
 config.window_decorations = "NONE | RESIZE"
+{{- if eq .chezmoi.os "windows" }}
 config.default_prog = { "powershell.exe", "-NoLogo" }
+{{- end }}
 config.initial_cols = 81
 config.window_close_confirmation = "NeverPrompt"
 
