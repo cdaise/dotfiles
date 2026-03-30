@@ -1,5 +1,8 @@
 {{- if eq .chezmoi.os "windows" }}
 aerospace/*
 {{- end }}
+{{- if eq .chezmoi.os "darwin }}
+readonly_OneDrive/
+{{- end }}
 nvim-pack-lock.json
 nul
