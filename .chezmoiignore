@@ -1,3 +1,4 @@
 {{- if eq .chezmoi.os "windows" }}
 aerospace/*
 {{- end }}
+nvim-pack-lock.json
