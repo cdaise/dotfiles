@@ -2,3 +2,4 @@
 aerospace/*
 {{- end }}
 nvim-pack-lock.json
+nul
